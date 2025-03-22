@@ -13,7 +13,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-hover table-responsive table-bordered">
+                <div class="table-content">
+                    <table class="table table-hover table-responsive table-bordered">
                     <thead>
                     <tr class="table-active">
                         <th scope="col">#</th>
@@ -24,19 +25,24 @@
                     </tr>
                     </thead>
                     <tbody>
+                    @forelse($students as $key=> $student)
                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <th scope="row">{{ ++$key }}</th>
+                        <td>{{ $student['name']}}</td>
+                        <td>{{ $student['email']}}</td>
+                        <td><img class="" src="{{ asset('uploads/student_img/' . $student->photo) }}" height="50" alt="Student Photo"></td>
                         <td class="text-center">
                             <a href=""><i class="fa-solid fa-eye"></i></a>
                             <a href=""><i class="fa-solid fa-pen-to-square" style="margin: 0px 5px"></i></a>
                             <a href=""><i class="fa-solid fa-trash"></i></a>
                         </td>
                     </tr>
+                    @empty
+                        <tr><td><b>No data exist!</b></td></tr>
+                    @endforelse
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
     </div>
@@ -100,6 +106,9 @@
                         }else{
                             $('.errors').html('');
                             $('.errors').addClass('d-none');
+                            $('.table-content').load(location.href + ' .table-content');
+                           // $('.table-content').load(location.href + ' .table-content');
+
                             dialog.modal('hide');
                         }
                     }
