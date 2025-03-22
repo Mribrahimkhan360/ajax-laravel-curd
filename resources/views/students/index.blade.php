@@ -1,0 +1,81 @@
+@extends('students.layouts.app')
+@section('content')
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col">
+                <h2>Student Create</h2>
+            </div>
+            <div class="col float-end">
+                <a href="{{ route('students.create') }}" id="BootmyModalShow" class="btn btn-primary float-end">Add Student</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-hover table-responsive table-bordered">
+                    <thead>
+                    <tr class="table-active">
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Photo</th>
+                        <th scope="col" class="text-center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td class="text-center">
+                            <a href=""><i class="fa-solid fa-eye"></i></a>
+                            <a href=""><i class="fa-solid fa-pen-to-square" style="margin: 0px 5px"></i></a>
+                            <a href=""><i class="fa-solid fa-trash"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('bootBox')
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- dialog body -->
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    Hello world!
+                </div>
+                <!-- dialog buttons -->
+                <div class="modal-footer"><button type="button" class="btn btn-primary">OK</button></div>
+            </div>
+        </div>
+    </div>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function(){
+            $(document).on('click','#BootmyModalShow',function(e){
+                e.preventDefault();
+                let modalUrl = $(this).attr('href');
+                $.ajax({
+                    type: "GET",
+                    url: modalUrl,
+                    success: function (res) {
+                        let dialog = bootbox.dialog({
+                            title: 'Student Create',
+                            message: "<div class='ModalContent'>Student</div>",
+                            size: 'large'
+                        });
+                        $('.ModalContent').html(res);
+                    }
+                });
+
+            });
+        });
+    </script>
+@endsection
