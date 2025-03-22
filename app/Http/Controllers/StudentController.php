@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Student;
+use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
 
@@ -37,6 +39,38 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(),[
+           'name'=> 'required',
+            'email' => 'required|unique:students,email',
+            'photo' => 'required|mimes:png,jpg,jpeg'
+        ]);
+
+        if ($validator->fails())
+        {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->messages()
+            ]);
+        }else{
+            $student = new Student();
+            $student->name = $request->name;
+            $student->email = $request->email;
+
+            if ($request->file('photo'))
+            {
+                $file = $request->file('photo');
+                $extention = $file->getClientOriginalExtension();
+                $fileName = time().'.'.$extention;
+                $file->move('uploads/student_img/',$fileName);
+            }
+            $student->photo = $fileName;
+            $student->save();
+
+            return  response()->json([
+                'status' => 200,
+                'message' => 'Student Successfully Created'
+            ]);
+        }
     }
 
     /**

@@ -59,6 +59,7 @@
 @section('script')
     <script>
         $(document).ready(function(){
+            let dialog = '';
             $(document).on('click','#BootmyModalShow',function(e){
                 e.preventDefault();
                 let modalUrl = $(this).attr('href');
@@ -66,7 +67,7 @@
                     type: "GET",
                     url: modalUrl,
                     success: function (res) {
-                        let dialog = bootbox.dialog({
+                         dialog = bootbox.dialog({
                             title: 'Student Create',
                             message: "<div class='ModalContent'>Student</div>",
                             size: 'large'
@@ -76,6 +77,34 @@
                 });
 
             });
+
+            $(document).on('submit','#createStudentForm',function (e) {
+                e.preventDefault();
+                //ajax
+                let formData = new FormData($('#createStudentForm')[0]);
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('students.store') }}",
+                    data: formData,
+                    processData: false,
+                    contentType:false,
+                    success: function (res) {
+                        console.log(res);
+                        if (res.status === 400){
+                            $('.errors').html('');
+                            $('.errors').removeClass('d-none');
+
+                            $('.nameError').text(res.errors.name);
+                            $('.emailError').text(res.errors.email);
+                            $('.photoError').text(res.errors.photo);
+                        }else{
+                            $('.errors').html('');
+                            $('.errors').addClass('d-none');
+                            dialog.modal('hide');
+                        }
+                    }
+                })
+            })
         });
     </script>
 @endsection
