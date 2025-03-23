@@ -10,8 +10,8 @@
         <div class="emailError errors d-none"></div>
     </div>
     <div class="form-group mt-4">
-        <input type="file" class="img_preivew form-control text-danger" name="photo" id="photo">
-        <img class="" src="{{ asset('uploads/student_img/' . $student->photo) }}" height="50" alt="Student Photo">
+        <input type="file" class="img_preview form-control text-danger" name="photo" id="photo">
+        <img class="img_preview" src="{{ asset('uploads/student_img/' . $student->photo) }}" height="50" alt="Student Photo">
 
         <div class="photoError errors d-none"></div>
     </div>

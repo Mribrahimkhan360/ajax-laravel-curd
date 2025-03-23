@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Models\Student;
+use Faker\Core\File;
 use Illuminate\Support\Facades\Validator;
+//use Illuminate\Support\Facades\File;
+
 
 use Illuminate\Http\Request;
 
@@ -107,7 +110,37 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name'  => 'required',
+            'email' => 'required|email|unique:students,email,' . $id,
+            'photo' => 'nullable|mimes:png,jpg,jpeg'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->messages(),
+            ]);
+        } else {
+            $student = Student::find($id);
+            $student->name = $request->name;
+            $student->email = $request->email;
+
+            if($request->hasFile('photo'))
+            {
+                $file = $request->file('photo');
+                $extention = $file->getClientOriginalExtension();
+                $fileName = time().'.'.$extention;
+                $file->move('uploads/student_img/',$fileName);
+            }
+            $student->photo = $fileName;
+            $student->save();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Student Successfully Updated'
+            ]);
+        }
     }
 
     /**

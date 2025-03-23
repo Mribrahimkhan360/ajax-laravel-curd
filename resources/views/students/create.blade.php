@@ -1,5 +1,6 @@
 <form id="createStudentForm" action="{{ route('students.store') }}" method="post" enctype="multipart/form-data">
     @csrf
+{{--    <div class="text-success">{{ session('success') }}</div>--}}
     <div class="form-group mt-4">
         <input type="text" class="form-control text-danger" id="name" name="name" placeholder="Name">
         <div class="nameError errors d-none"></div>

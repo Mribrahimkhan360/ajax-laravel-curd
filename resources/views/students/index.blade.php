@@ -6,7 +6,7 @@
                 <h2>Student Create</h2>
             </div>
             <div class="col float-end">
-                <a title="Create" href="{{ route('students.create') }}" id="BootmyModalShow" class="btn btn-primary float-end">Add Student</a>
+                <a title="Create" formActionUrl="{{ route('students.store') }}" id="BootmyModalShow" class="btn btn-primary float-end">Add Student</a>
             </div>
         </div>
     </div>
@@ -32,9 +32,15 @@
                         <td>{{ $student['email']}}</td>
                         <td><img class="" src="{{ asset('uploads/student_img/' . $student->photo) }}" height="50" alt="Student Photo"></td>
                         <td class="text-center">
-                            <a title="View" href=""><i class="fa-solid fa-eye"></i></a>
-                            <a title="Edit" href="{{ route('students.edit',$student->id) }}" id="BootmyModalShow"><i class="fa-solid fa-pen-to-square" style="margin: 0px 5px"></i></a>
-                            <a title="Delete" href=""><i class="fa-solid fa-trash"></i></a>
+                            <a title="View" href="{{ route('students.show',$student->id) }}"><i class="fa-solid fa-eye"></i></a>
+                            <a formActionUrl="{{ route('students.update',$student->id) }}" title="Edit" href="{{ route('students.edit',$student->id) }}" id="BootmyModalShow"><i class="fa-solid fa-pen-to-square" style="margin: 0px 5px"></i></a>
+                            <form title="Delete" class="deleteBtn d-inline" action="{{ route('students.destroy',$student->id) }}">
+                                @csrf
+                                @method('DELETE')
+                                <a title="Delete" href="">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </form>
                         </td>
                     </tr>
                     @empty
@@ -66,10 +72,17 @@
     <script>
         $(document).ready(function(){
             let dialog = '';
+            let formUrl = '';
+            let formId = '';
+            let modalTitle = '';
+            let successMsg = '';
+
             $(document).on('click','#BootmyModalShow',function(e){
                 e.preventDefault();
+
                 let modalUrl = $(this).attr('href');
-                let modalTitle = $(this).attr('title');
+                modalTitle   = $(this).attr('title');
+                formUrl      = $(this).attr('formActionUrl');
 
                 //alert(modalUrl);
 
@@ -92,9 +105,10 @@
                 e.preventDefault();
                 //ajax
                 let formData = new FormData($('#createStudentForm')[0]);
+
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('students.store') }}",
+                    url: formUrl,
                     data: formData,
                     processData: false,
                     contentType:false,
@@ -129,7 +143,7 @@
                 {
                     let reader = new FileReader();
                     reader.onload = function (e) {
-                        $('.img_preivew').attr('src',e.target.result);
+                        $('.img_preview').attr('src',e.target.result);
 
                     };
                     reader.readAsDataURL(file)
