@@ -6,7 +6,7 @@
                 <h2>Student Create</h2>
             </div>
             <div class="col float-end">
-                <a href="{{ route('students.create') }}" id="BootmyModalShow" class="btn btn-primary float-end">Add Student</a>
+                <a title="Create" href="{{ route('students.create') }}" id="BootmyModalShow" class="btn btn-primary float-end">Add Student</a>
             </div>
         </div>
     </div>
@@ -32,9 +32,9 @@
                         <td>{{ $student['email']}}</td>
                         <td><img class="" src="{{ asset('uploads/student_img/' . $student->photo) }}" height="50" alt="Student Photo"></td>
                         <td class="text-center">
-                            <a href=""><i class="fa-solid fa-eye"></i></a>
-                            <a href=""><i class="fa-solid fa-pen-to-square" style="margin: 0px 5px"></i></a>
-                            <a href=""><i class="fa-solid fa-trash"></i></a>
+                            <a title="View" href=""><i class="fa-solid fa-eye"></i></a>
+                            <a title="Edit" href="{{ route('students.edit',$student->id) }}" id="BootmyModalShow"><i class="fa-solid fa-pen-to-square" style="margin: 0px 5px"></i></a>
+                            <a title="Delete" href=""><i class="fa-solid fa-trash"></i></a>
                         </td>
                     </tr>
                     @empty
@@ -69,12 +69,16 @@
             $(document).on('click','#BootmyModalShow',function(e){
                 e.preventDefault();
                 let modalUrl = $(this).attr('href');
+                let modalTitle = $(this).attr('title');
+
+                //alert(modalUrl);
+
                 $.ajax({
                     type: "GET",
                     url: modalUrl,
                     success: function (res) {
                          dialog = bootbox.dialog({
-                            title: 'Student Create',
+                            title: 'Student '+modalTitle,
                             message: "<div class='ModalContent'>Student</div>",
                             size: 'large'
                         });

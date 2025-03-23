@@ -94,6 +94,8 @@ class StudentController extends Controller
     public function edit($id)
     {
         //
+        $data['student'] = Student::find($id);
+        return view('students.edit',$data);
     }
 
     /**

@@ -16,7 +16,7 @@
         <div class="photoError errors d-none"></div>
     </div>
     <div class="btn-groups mt-4 text-end">
-        <button type="submit" class="btn btn-sm btn-secondary btnbox-cancel">Cancel</button>
+        <button type="button" class="btn btn-sm btn-secondary bootbox-close-button">Cancel</button>
         <button type="submit" class="btn btn-sm btn-primary">Submit</button>
     </div>
 </form>
